@@ -1,0 +1,6 @@
+# coisas do python
+__pycache__
+
+# backups de texto
+*~
+*.swp
