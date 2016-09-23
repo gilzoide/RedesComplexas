@@ -56,7 +56,7 @@ def processa (nomeEntrada):
         printa ('Entropia de Shannon:', - reduce (lambda acc, prob: acc + prob * math.log (prob), grausAcumulados))
         printa ('Média do coeficiente de aglomeração local:', nx.average_clustering (G))
         printa ('Coeficiente de aglomeração pela fórmula da transitividade:', nx.transitivity (G))
-        printa ('Média dos menores caminhos:', nx.average_shortest_path_length (maiorComponente))
+        # printa ('Média dos menores caminhos:', nx.average_shortest_path_length (maiorComponente))
         printa ('Eficiência:', eficiência (G))
         printa ('Diâmetro:', nx.diameter (maiorComponente))
 
