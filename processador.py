@@ -24,7 +24,7 @@ def criaPastaSaída (entrada):
     return nome
 
 
-def processa (nomeEntrada):
+def processa (nomeEntrada, toStdOut = False):
     """Processa arquivo da rede, pondo as saídas na pasta com o nome 'out/<rede>'
     Saídas:
         - ?
@@ -33,8 +33,12 @@ def processa (nomeEntrada):
     with open (pastaSaída + '/stats.txt', 'w') as arq:
         def printa (*args):
             """Escreve a saída no arquivo de estatísticas, pliz"""
-            arq.write (' '.join (map (str, args)))
-            arq.write ('\n')
+            if toStdOut:
+                print (' ', *args)
+            else:
+                arq.write (' '.join (map (str, args)))
+                arq.write ('\n')
+
         # lê a rede do arquivo de entrada
         G = nx.read_weighted_edgelist (nomeEntrada, nodetype = int, comments = '%')
         # e acha o maior componente
@@ -56,13 +60,14 @@ def processa (nomeEntrada):
         printa ('Entropia de Shannon:', - reduce (lambda acc, prob: acc + prob * math.log (prob), grausAcumulados))
         printa ('Média do coeficiente de aglomeração local:', nx.average_clustering (G))
         printa ('Coeficiente de aglomeração pela fórmula da transitividade:', nx.transitivity (G))
-        # printa ('Média dos menores caminhos:', nx.average_shortest_path_length (maiorComponente))
+        printa ('Média dos menores caminhos:', nx.average_shortest_path_length (maiorComponente))
         printa ('Eficiência:', eficiência (G))
         printa ('Diâmetro:', nx.diameter (maiorComponente))
 
         # cálculo de clustering
         distribuiçãoAglomeração = list (nx.clustering (G).values ())
-        printa ('Correlação de Pearson de k(i) X cc(i):', stats.pearsonr (distribuiçãoDeGraus, distribuiçãoAglomeração)[0])
+        pirso = np.array (list (filter (lambda x: x[0] != 0 and x[1] != 0, zip (distribuiçãoDeGraus, distribuiçãoAglomeração))))
+        printa ('Correlação de Pearson de k(i) X cc(i):', stats.pearsonr (np.log10 (pirso[:, 0]), np.log10 (pirso[:, 1]))[0])
 
     ##  Plots  ##
     # plot da distribuição do grau
@@ -82,7 +87,9 @@ def processa (nomeEntrada):
     plt.title ('Distribuição de grau X coeficiente de aglomeração')
     plt.xlabel ('k(i)')
     plt.ylabel ('cc(i)')
-    plt.savefig (pastaSaída + '/k x cc.png')
+    plt.yscale ('log')
+    plt.xscale ('log')
+    plt.savefig (pastaSaída + '/kXcc.png')
     # plot do coeficiente de aglomeração acumulado
     plt.figure ('Coeficiente de aglomeração')
     plt.clf ()
@@ -91,3 +98,6 @@ def processa (nomeEntrada):
     plt.ylabel ('P (X < x)')
     plt.title ('Distribuição de probabilidade acumulada do coeficiente de aglomeração local')
     plt.savefig (pastaSaída + '/aglomeração.png')
+
+
+#TODO cc(k)
