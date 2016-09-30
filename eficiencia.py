@@ -2,6 +2,7 @@
 
 import networkx as nx
 
+# Algoritmo implementado juntamente com a Ana Lima, por isso que tá meio igual =P
 def eficiência (G):
     """Calcula eficiência da rede G"""
     E = 0

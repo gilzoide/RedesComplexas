@@ -98,6 +98,3 @@ def processa (nomeEntrada, toStdOut = False):
     plt.ylabel ('P (X < x)')
     plt.title ('Distribuição de probabilidade acumulada do coeficiente de aglomeração local')
     plt.savefig (pastaSaída + '/aglomeração.png')
-
-
-#TODO cc(k)
