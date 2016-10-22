@@ -1,6 +1,6 @@
 Redes Complexas
 ===============
-Trabalhos prático de Redes complexas, usando [python 3](https://www.python.org/)
+Trabalhos práticos de Redes complexas, usando [python 3](https://www.python.org/)
 
 Dependências
 ------------

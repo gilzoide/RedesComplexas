@@ -3,11 +3,9 @@
 from os import makedirs
 import math
 from functools import reduce
-from eficiencia import eficiência
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import powerlaw
 import numpy as np
 import scipy.stats as stats
 
@@ -22,11 +20,6 @@ def criaPastaSaída (entrada):
         pass
 
     return nome
-
-def extrai1 (tup):
-    """Extrator do índice 1 de uma tupla, útil pras funções do nx que retornam
-    dicionários com os resultados"""
-    return tup[1]
 
 
 def processa (nomeEntrada, toStdOut = False):
@@ -49,47 +42,52 @@ def processa (nomeEntrada, toStdOut = False):
         # e acha o maior componente
         maiorComponente = max (nx.connected_component_subgraphs (G), key = len)
 
-        distribuiçãoDeGraus = list (map (extrai1, G.degree ()))
-        histograma = nx.degree_histogram (G)
-        n_nós = len (G)
-        probabilidadeGraus = list (map (lambda x: x / n_nós, histograma))
+        distribuiçãoDeGraus = list (map (lambda t: t[1], G.degree ()))
+
+        # knn, assortatividade e talz
+        knn = nx.k_nearest_neighbors (G)
+        distribuiçãoKnn = list (knn.values ())
+        ks = list (knn.keys ())
+        assortatividade = nx.degree_assortativity_coefficient (G)
+        printa ("Assortatividade:", assortatividade)
+        printa ("Pearson:", stats.pearsonr (ks, distribuiçãoKnn)[0])
+        printa ("Spearman:", stats.spearmanr (ks, distribuiçãoKnn)[0])
 
         # Centralidades; TODO: descobrir se rola o 'G' ou o 'maiorComponente' nessas medidas
-        betweenness = np.array (nx.betweenness_centrality (G).values ())
-        eigenvector = np.array (nx.eigenvector_centrality_numpy (G).values ())
-        closeness = np.array (nx.closeness_centrality (G).values ())
+        betweenness = list (nx.betweenness_centrality (G).values ())
+        eigenvector = list (nx.eigenvector_centrality_numpy (G).values ())
+        closeness = list (nx.closeness_centrality (G).values ())
+        pageRank = list (nx.pagerank_numpy (G).values ())
 
-        # Assortatividade
-        assortatividade = nx.degree_assortativity_coefficient (G)
-
-        printa ("Assortatividade:", assortatividade)
 
     ##  Plots  ##
-    # plot da distribuição do grau
-    # plt.figure ('Distribuição do grau')
-    # plt.clf ()
-    # plt.plot (probabilidadeGraus, 'r-', label = 'Probabilidade')
-    # plt.plot (grausAcumulados, 'b-', label = 'Prob. acumulada complementar')
-    # plt.title ('Distribuição do grau')
+    # plot do 'k vs knn'
+    plt.figure ('k X knn(k)')
+    plt.clf ()
+    plt.plot (distribuiçãoKnn,  'b-')
+    plt.title ('Distribuição do grau')
+    plt.xlabel ('k')
+    plt.ylabel ('knn (k)')
     # plt.yscale ('log')
     # plt.xscale ('log')
-    # plt.legend (loc = 'lower left')
-    # plt.savefig (pastaSaída + '/dist-grau.png')
-    # # plot do k(i) vs cc(i)
-    # plt.figure ('k(i) X cc(i)')
-    # plt.clf ()
-    # plt.plot (distribuiçãoDeGraus, distribuiçãoAglomeração, 'bo')
-    # plt.title ('Distribuição de grau X coeficiente de aglomeração')
-    # plt.xlabel ('k(i)')
-    # plt.ylabel ('cc(i)')
-    # plt.yscale ('log')
-    # plt.xscale ('log')
-    # plt.savefig (pastaSaída + '/kXcc.png')
-    # # plot do coeficiente de aglomeração acumulado
-    # plt.figure ('Coeficiente de aglomeração')
-    # plt.clf ()
-    # plt.hist (distribuiçãoAglomeração, bins = 100, histtype = 'step', normed = True, cumulative = True)
-    # plt.xlabel ('cc')
-    # plt.ylabel ('P (X < x)')
-    # plt.title ('Distribuição de probabilidade acumulada do coeficiente de aglomeração local')
-    # plt.savefig (pastaSaída + '/aglomeração.png')
+    plt.savefig (pastaSaída + '/kXknn.png')
+    # plot do k(i) vs bet(i)
+    plt.figure ('k(i) X betweenness(i)')
+    plt.clf ()
+    pirso = stats.pearsonr (distribuiçãoDeGraus, betweenness)[0]
+    plt.loglog (distribuiçãoDeGraus, betweenness, 'bo', label = 'Pearson: ' + str (pirso))
+    plt.legend (loc = 'lower right', scatterpoints = 0)
+    plt.title ('Distribuição de grau X Betweenness centrality')
+    plt.xlabel ('k(i)')
+    plt.ylabel ('bet(i)')
+    plt.savefig (pastaSaída + '/kXbet.png')
+    # plot do coeficiente de aglomeração acumulado
+    plt.figure ('eigen X pagerank')
+    plt.clf ()
+    plt.plot (eigenvector, pageRank, 'bo')
+    plt.xlabel ('eigenvector (i)')
+    plt.ylabel ('pagerank (i)')
+    plt.yscale ('log')
+    plt.xscale ('log')
+    plt.title ('Eigenvector centrality X Page rank')
+    plt.savefig (pastaSaída + '/eigXpagerank.png')
