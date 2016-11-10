@@ -11,8 +11,8 @@ def main ():
     """Roda os trem. Chame com qualquer argumento pra saída ir pro stdout e não
     pros arquivos"""
     toStdOut = len (sys.argv) > 1
-    redes = glob ('in/*')
-    for arq in redes[:1]:
+    redes = glob ('in/as-c*')
+    for arq in redes:
         print ('Processando "%s"' % (arq))
         processa (arq, toStdOut)
 

@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 
+from caminhadaleatoria import caminhadaleatoria
+
 def criaPastaSaída (entrada):
     """Cria a pasta de saída (se precisar) baseado no nome da entrada, e retorna
     o nome da pasta"""
@@ -32,7 +34,7 @@ def processa (nomeEntrada, toStdOut = False):
         def printa (*args):
             """Escreve a saída no arquivo de estatísticas, pliz"""
             if toStdOut:
-                print (' ', *args)
+                print (nomeEntrada, '\t', *args)
             else:
                 arq.write (' '.join (map (str, args)))
                 arq.write ('\n')
@@ -59,6 +61,8 @@ def processa (nomeEntrada, toStdOut = False):
         closeness = list (nx.closeness_centrality (G).values ())
         pageRank = list (nx.pagerank_numpy (G).values ())
 
+        # if nomeEntrada != 'in/as-caida20071105.CAIDA':
+            # caminhada = caminhadaleatoria (G)
 
     ##  Plots  ##
     # plot do 'k vs knn'
@@ -68,8 +72,6 @@ def processa (nomeEntrada, toStdOut = False):
     plt.title ('Distribuição do grau')
     plt.xlabel ('k')
     plt.ylabel ('knn (k)')
-    # plt.yscale ('log')
-    # plt.xscale ('log')
     plt.savefig (pastaSaída + '/kXknn.png')
     # plot do k(i) vs bet(i)
     plt.figure ('k(i) X betweenness(i)')
@@ -84,10 +86,31 @@ def processa (nomeEntrada, toStdOut = False):
     # plot do coeficiente de aglomeração acumulado
     plt.figure ('eigen X pagerank')
     plt.clf ()
-    plt.plot (eigenvector, pageRank, 'bo')
+    pirso = stats.pearsonr (eigenvector, pageRank)[0]
+    plt.loglog (eigenvector, pageRank, 'bo', label = 'Pearson: ' + str (pirso))
+    plt.legend (loc = 'lower right', scatterpoints = 0)
     plt.xlabel ('eigenvector (i)')
     plt.ylabel ('pagerank (i)')
-    plt.yscale ('log')
-    plt.xscale ('log')
     plt.title ('Eigenvector centrality X Page rank')
     plt.savefig (pastaSaída + '/eigXpagerank.png')
+    # if nomeEntrada != 'in/as-caida20071105.CAIDA':
+        # # plot do k vs caminhada
+        # plt.figure ('k X caminhada aleatória')
+        # plt.clf ()
+        # pirso = stats.pearsonr (distribuiçãoDeGraus, caminhada)[0]
+        # plt.plot (distribuiçãoDeGraus, caminhada,  'bo', label = 'Pearson: ' + str (pirso))
+        # plt.legend (loc = 'lower right', scatterpoints = 0)
+        # plt.title ('Distribuição do grau X Caminhada aleatória')
+        # plt.xlabel ('k (i)')
+        # plt.ylabel ('caminhada (i)')
+        # plt.savefig (pastaSaída + '/kXcaminhada.png')
+        # # plot do eigenvector vs caminhada
+        # plt.figure ('eigenvector X caminhada aleatória')
+        # plt.clf ()
+        # pirso = stats.pearsonr (eigenvector, caminhada)[0]
+        # plt.plot (eigenvector, caminhada,  'bo', label = 'Pearson: ' + str (pirso))
+        # plt.legend (loc = 'lower right', scatterpoints = 0)
+        # plt.title ('Eigenvector centrality X Caminhada aleatória')
+        # plt.xlabel ('eigenvector (i)')
+        # plt.ylabel ('caminhada (i)')
+        # plt.savefig (pastaSaída + '/eigXcaminhada.png')
