@@ -1,3 +1,4 @@
+#!-*- conding: utf8 -*-
 ## Caminhada aleatória ##
 
 import networkx as nx

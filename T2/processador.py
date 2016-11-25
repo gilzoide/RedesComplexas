@@ -1,4 +1,5 @@
-## Processador dos grafo ##
+#!-*- conding: utf8 -*-
+# Processador dos grafo ##
 
 from os import makedirs
 import math

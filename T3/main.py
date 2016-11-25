@@ -17,5 +17,6 @@ def main ():
         print ('Processando "%s"' % (arq))
         processa (arq, toStdOut)
 
+
 if __name__ == '__main__':
     main ()
