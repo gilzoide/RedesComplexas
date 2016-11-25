@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 
-from caminhadaleatoria import caminhadaleatoria
 
 def criaPastaSaída (entrada):
     """Cria a pasta de saída (se precisar) baseado no nome da entrada, e retorna
@@ -51,9 +50,13 @@ def processa (nomeEntrada, toStdOut = False):
         g1 = ig.Graph().TupleList(adicionar)
         print ('Start')
         bet = g1.community_edge_betweenness()
+        print ('Bet ok')
         fastGreedy = g1.community_fastgreedy()
+        print ('Fast ok')
         walktrap = g1.community_walktrap()
+        print ('walk ok')
         eigen = g1.community_leading_eigenvector()
+        print ('Eigen ok')
 
         printa ("Betweenness: ", g1.modularity(bet.as_clustering().membership))
         printa ("Fast Greedy: ", g1.modularity(fastGreedy.as_clustering().membership))
@@ -61,3 +64,27 @@ def processa (nomeEntrada, toStdOut = False):
         printa ("Eigenvector: ", g1.modularity(eigen))
         
 
+def umaRede():
+    color_list = ['red', 'blue', 'green', 'cyan', 'pink', 'orange', 'grey', 'yellow', 'white', 'black', 'purple']
+    G = ig.Graph.Famous("Zachary")
+
+    bet = G.community_edge_betweenness()
+    fastGreedy = G.community_fastgreedy()
+    walktrap = G.community_walktrap()
+    eigen = G.community_leading_eigenvector()
+
+    layout = G.layout_kamada_kawai()
+    ig.plot(G, "graphbet.png", layout=layout, vertex_color=[color_list[x] for x in bet.as_clustering().membership])
+
+    ig.plot(G, "graphfastgreedy.png", layout=layout, vertex_color=[color_list[x] for x in fastGreedy.as_clustering().membership])
+    
+    ig.plot(G, "graphwalk.png", layout=layout, vertex_color=[color_list[x] for x in walktrap.as_clustering().membership])
+    
+    color = [x for x in range(34)]
+    count = 0
+    for x in eigen:
+        for y in x:
+            color[y] = color_list[count]
+        count += 1
+
+    ig.plot(G, "grapheigen.png", layout=layout, vertex_color=color)
