@@ -14,9 +14,9 @@ def main ():
     pros arquivos"""
     toStdOut = len (sys.argv) > 1
     redes = glob ('in/*')
-    #for arq in redes:
-    #    print ('Processando "%s"' % (arq))
-    #    processa (arq, toStdOut)
+    for arq in redes:
+        print ('Processando "%s"' % (arq))
+        processa (arq, toStdOut)
     umaRede()
 
 if __name__ == '__main__':
