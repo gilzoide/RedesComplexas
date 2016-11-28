@@ -113,11 +113,8 @@ def redeCriada():
     print ("Walktrap: ", g1.modularity(walktrap.as_clustering().membership))
     print ("Eigenvector: ", g1.modularity(eigen))
 
-def redeCriadaBonita():
-    number = 1
-    G = le("network.dat")
-
-    color_list = ['red', 'blue', 'green', 'cyan', 'pink', 'orange', 'grey', 'yellow', 'white', 'black', 'purple', '']
+def redeCriadaBonita(pasta):
+    G = le(pasta + "/network.dat")
 
     bet = G.community_edge_betweenness()
     fastGreedy = G.community_fastgreedy()
@@ -128,15 +125,15 @@ def redeCriadaBonita():
 
     pal = RainbowPalette(max(bet.as_clustering().membership)+1)
 
-    ig.plot(G, str(number)+"graphbet.png", layout=layout, vertex_color=[pal[x] for x in bet.as_clustering().membership])
+    ig.plot(G, pasta + "/graphbet.png", layout=layout, vertex_color=[pal[x] for x in bet.as_clustering().membership])
 
     pal = RainbowPalette(max(fastGreedy.as_clustering().membership)+1)
 
-    ig.plot(G, str(number)+"graphfastgreedy.png", layout=layout, vertex_color=[pal[x] for x in fastGreedy.as_clustering().membership])
+    ig.plot(G, pasta + "/graphfastgreedy.png", layout=layout, vertex_color=[pal[x] for x in fastGreedy.as_clustering().membership])
     
     pal = RainbowPalette(max(walktrap.as_clustering().membership)+1)
 
-    ig.plot(G, str(number)+"graphwalk.png", layout=layout, vertex_color=[pal[x] for x in walktrap.as_clustering().membership])
+    ig.plot(G, pasta + "/graphwalk.png", layout=layout, vertex_color=[pal[x] for x in walktrap.as_clustering().membership])
     
     pal = RainbowPalette(len(eigen))
     color = [x for x in range(G.vcount())]
@@ -146,4 +143,4 @@ def redeCriadaBonita():
             color[y] = pal[count]
         count += 1
 
-    ig.plot(G, str(number)+"grapheigen.png", layout=layout, vertex_color=color)
+    ig.plot(G, pasta + "/grapheigen.png", layout=layout, vertex_color=color)
