@@ -1,0 +1,40 @@
+/benchmark -N 128 -k 16 -maxk 16 -muw 0.1 -minc 32 -maxc 32 -beta 1
+setting... -N 128
+setting... -k 16
+setting... -maxk 16
+setting... -muw 0.1
+setting... -minc 32
+setting... -maxc 32
+setting... -beta 1
+
+**************************************************************
+number of nodes:	128
+average degree:	16
+maximum degree:	16
+exponent for the degree distribution:	2
+exponent for the community size distribution:	1
+mixing parameter(topology):	0.1
+mixing parameter (weights):	0.1
+beta exponent:	1
+number of overlapping nodes:	0
+number of memberships of the overlapping nodes:	0
+community size range set equal to [32 , 32]
+**************************************************************
+
+building communities... 
+connecting communities... 
+inserting weights...
+recording network...
+
+
+---------------------------------------------------------------------------
+network of 128 vertices and 2048 edges;	 average degree = 16
+
+average mixing parameter (in-links): 0.104004 +/- 0.0295198
+average mixing parameter (out-links): 0.104004 +/- 0.0334
+p_in: 0.46245	p_out: 0.017334
+
+average mixing parameter (weights): 0.100024 +/- 0
+average weight of an internal link 1.00446 +/- 0.042114
+average weight of an external link 0.961759 +/- 0.59755
+

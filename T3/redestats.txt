@@ -1,0 +1,8 @@
+Bet ok
+Fast ok
+walk ok
+Eigen ok
+Betweenness:  0.6175032796217915
+Fast Greedy:  0.6175032796217915
+Walktrap:  0.6175032796217915
+Eigenvector:  0.5981092284225639

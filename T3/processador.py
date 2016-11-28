@@ -7,6 +7,7 @@ from functools import reduce
 
 import networkx as nx
 import igraph as ig
+from igraph.drawing.colors import RainbowPalette
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
@@ -88,3 +89,61 @@ def umaRede():
         count += 1
 
     ig.plot(G, "grapheigen.png", layout=layout, vertex_color=color)
+
+def le(nome):
+    G = nx.read_weighted_edgelist (nome, nodetype = int, comments = '%')
+    maiorComponente = max (nx.connected_component_subgraphs (G), key = len)
+
+    adicionar = []
+    for i in nx.to_edgelist(maiorComponente):
+        adicionar.append(tuple([i[0], i[1], i[2]]))
+
+    return ig.Graph().TupleList(adicionar)
+
+def redeCriada():
+    g1 = le("network.dat")
+
+    bet = g1.community_edge_betweenness()
+    fastGreedy = g1.community_fastgreedy()
+    walktrap = g1.community_walktrap()
+    eigen = g1.community_leading_eigenvector()
+
+    print ("Betweenness: ", g1.modularity(bet.as_clustering().membership))
+    print ("Fast Greedy: ", g1.modularity(fastGreedy.as_clustering().membership))
+    print ("Walktrap: ", g1.modularity(walktrap.as_clustering().membership))
+    print ("Eigenvector: ", g1.modularity(eigen))
+
+def redeCriadaBonita():
+    number = 1
+    G = le("network.dat")
+
+    color_list = ['red', 'blue', 'green', 'cyan', 'pink', 'orange', 'grey', 'yellow', 'white', 'black', 'purple', '']
+
+    bet = G.community_edge_betweenness()
+    fastGreedy = G.community_fastgreedy()
+    walktrap = G.community_walktrap()
+    eigen = G.community_leading_eigenvector()
+
+    layout = G.layout_kamada_kawai()
+
+    pal = RainbowPalette(max(bet.as_clustering().membership)+1)
+
+    ig.plot(G, str(number)+"graphbet.png", layout=layout, vertex_color=[pal[x] for x in bet.as_clustering().membership])
+
+    pal = RainbowPalette(max(fastGreedy.as_clustering().membership)+1)
+
+    ig.plot(G, str(number)+"graphfastgreedy.png", layout=layout, vertex_color=[pal[x] for x in fastGreedy.as_clustering().membership])
+    
+    pal = RainbowPalette(max(walktrap.as_clustering().membership)+1)
+
+    ig.plot(G, str(number)+"graphwalk.png", layout=layout, vertex_color=[pal[x] for x in walktrap.as_clustering().membership])
+    
+    pal = RainbowPalette(len(eigen))
+    color = [x for x in range(G.vcount())]
+    count = 0
+    for x in eigen:
+        for y in x:
+            color[y] = pal[count]
+        count += 1
+
+    ig.plot(G, str(number)+"grapheigen.png", layout=layout, vertex_color=color)
