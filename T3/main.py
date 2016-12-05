@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #!-*- conding: utf8 -*-
 
-##  Projeto 2: Centralidade e correlação do grau em redes complexas  ##
+##  Projeto 3: Processos dinâmicos em redes complexas  ##
 
 from glob import glob
 import sys
@@ -13,11 +13,11 @@ def main ():
     pros arquivos"""
     # toStdOut = len (sys.argv) > 1
     # redes = glob ('in/*')
-    #for arq in redes:
-    #    print ('Processando "%s"' % (arq))
-    #    processa (arq, toStdOut)
-    #umaRede()
-    #redeCriada()
+    # for arq in redes:
+    #     print ('Processando "%s"' % (arq))
+    #     processa (arq, toStdOut)
+    # umaRede()
+    # redeCriada()
     for i in range (0, 6):
         redeCriadaBonita('weighted_directed_nets/rede' + str (i))
 
