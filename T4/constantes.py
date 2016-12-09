@@ -8,3 +8,6 @@ mi_contato = 0.2
 
 beta_reativo = 0.3
 mi_reativo = 1
+
+N_redes = 1000
+K_medio = 8

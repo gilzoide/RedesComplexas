@@ -1,6 +1,6 @@
 # Exercício 1: Simular SI, SIR e SIS nos modelos BA e ER, usando transmissão reativa
 
-import constantes as const
+from constantes import *
 import epidemia
 import matplotlib.pyplot as plt
 
@@ -8,7 +8,7 @@ def ex1 (BA, ER):
     for modelo in ['si', 'sis', 'sir']:
         nome = 'BA-reativo-' + modelo
         print ('ex1 - Processando: ' + nome)
-        inf, _, _ = epidemia.reativo (BA, modelo, const.num_iter_reativo, const.beta_reativo, const.mi_reativo)
+        inf, _, _ = epidemia.reativo (BA, modelo, num_iter_reativo, beta_reativo, mi_reativo)
         # plot da proporção de infectados no reativo
         plt.figure (nome)
         plt.clf ()
@@ -18,9 +18,13 @@ def ex1 (BA, ER):
         plt.ylabel ('Infectados')
         plt.savefig ('figuras/{}.png'.format (nome))
 
+        if modelo == 'sir':
+            global BA_reativo_sir
+            BA_reativo_sir = inf
+
         nome = 'ER-reativo-' + modelo
         print ('ex1 - Processando: ' + nome)
-        inf, _, _ = epidemia.reativo (ER, modelo, const.num_iter_reativo, const.beta_reativo, const.mi_reativo)
+        inf, _, _ = epidemia.reativo (ER, modelo, num_iter_reativo, beta_reativo, mi_reativo)
         # plot da proporção de infectados no reativo
         plt.figure (nome)
         plt.clf ()
@@ -29,4 +33,7 @@ def ex1 (BA, ER):
         plt.xlabel ('t')
         plt.ylabel ('Infectados')
         plt.savefig ('figuras/{}.png'.format (nome))
-    
+
+        if modelo == 'sir':
+            global ER_reativo_sir
+            ER_reativo_sir = inf

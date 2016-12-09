@@ -32,8 +32,9 @@ def contato (G, modelo, iterações, A, B = 0, imunizados = None):
                 resultado_recuperados[it] += len (imunizados) / len (G)
                 resultado_suscetiveis[it] += 1 - (resultado_infectados[it] + resultado_recuperados[it])
         # acabaram os infectados, para de rodar =]
-        except:
-            pass
+        except Exception as ex:
+            if str (ex) != "Cannot choose from an empty sequence":
+                print (ex)
     return [x / len (G) for x in resultado_infectados], [x / len (G) for x in resultado_suscetiveis], [x / len (G) for x in resultado_recuperados]
 
 def reativo (G, modelo, iterações, A, B = 0, imunizados = None):
@@ -63,6 +64,7 @@ def reativo (G, modelo, iterações, A, B = 0, imunizados = None):
                 resultado_recuperados[it] += len (imunizados) / len (G)
                 resultado_suscetiveis[it] += 1 - (resultado_infectados[it] + resultado_recuperados[it])
         # acabaram os infectados, para de rodar =]
-        except:
-            pass
+        except Exception as ex:
+            if str (ex) != "Cannot choose from an empty sequence":
+                print (ex)
     return [x / len (G) for x in resultado_infectados], [x / len (G) for x in resultado_suscetiveis], [x / len (G) for x in resultado_recuperados]
