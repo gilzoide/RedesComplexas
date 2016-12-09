@@ -1,11 +1,12 @@
 # Processador das coisa, pra desafogar a main
 
 import networkx as nx
-import epidemia
 
-def processa ():
+from ex1 import ex1
+
+def processa (exs_a_rodar):
     BA = nx.barabasi_albert_graph (1000, 8)
     ER = nx.erdos_renyi_graph (1000, 8 / 1000)
-    
-    for modelo in ['si', 'sis', 'sir']:
-        inf, susc, rec = epidemia.contato (BA, modelo, 3000, 
+
+    if 1 in exs_a_rodar:
+        ex1 (BA, ER)
