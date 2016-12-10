@@ -27,7 +27,9 @@ def ex3 (BA, ER):
     # plot da proporção de infectados no contato
     plt.figure (nome)
     plt.clf ()
-    plt.plot (inf, 'b-', BA_reativo_sir, 'r-')
+    plt.plot (inf, 'b-', label = 'contato')
+    plt.plot (BA_reativo_sir, 'r-', label = 'reativo')
+    plt.legend ()
     plt.title ('Contato vs reativo na rede BA usando modelo ' + modelo)
     plt.xlabel ('t')
     plt.ylabel ('Infectados')
@@ -39,7 +41,9 @@ def ex3 (BA, ER):
     # plot da proporção de infectados no contato
     plt.figure (nome)
     plt.clf ()
-    plt.plot (inf, 'b-', ER_reativo_sir, 'r-')
+    plt.plot (inf, 'b-', label = 'contato')
+    plt.plot (ER_reativo_sir, 'r-', label = 'reativo')
+    plt.legend ()
     plt.title ('Contato vs reativo na rede ER usando modelo ' + modelo)
     plt.xlabel ('t')
     plt.ylabel ('Infectados')
