@@ -26,11 +26,11 @@ def ex5 (BA):
 
         # imunizando aleatórios
         rand_imunizados = set (random.sample (list (BA), numero_imunizados))
-        inf, _, _, _ = epidemia.reativo (BA, 'sir', 1000, beta_reativo, mi_reativo, rand_imunizados)
+        inf, _, _ = epidemia.reativo (BA, 'sir', 1000, beta_reativo, mi_reativo, rand_imunizados)
         resultado_rand.append (_tempo_acabou (inf))
         # imunizando hubs
         hubs_imunizados = set (maiores_graus[:numero_imunizados])
-        inf, _, _, _ = epidemia.reativo (BA, 'sir', 1000, beta_reativo, mi_reativo, hubs_imunizados)
+        inf, _, _ = epidemia.reativo (BA, 'sir', 1000, beta_reativo, mi_reativo, hubs_imunizados)
         resultado_hubs.append (_tempo_acabou (inf))
 
     plt.figure ('ex5')
